@@ -1,64 +1,42 @@
-package view;
+package org.example.view;
 
-import control.Controller;
-import model.Cat;
-import model.SpeakBehavior;
+import org.example.control.Controller;
 
 import javax.swing.*;
-import java.awt. *;
+import java.awt.*;
 import java.awt.event.*;
 
 public class MyPanel extends JPanel {
-        JTextField t1;
-        JTextField t2;
+    JButton switchButton;
+    Controller controller;
 
-        JTextField d1;
-        JButton d2;
-        JButton button;
-        JButton cat;
-        JButton dog;
+    public MyPanel (Controller controller) {
+        this.controller = controller;
+        switchButton = new JButton("perecl");
+        add(switchButton);
 
-       Controller controller;
 
-       //JButton button;
-        public MyPanel (Controller controller) {
-            this.controller = controller;
-            t1 = new JTextField("           ");
-            t2 = new JTextField("           ");
-            button = new JButton("BUTTON");
-            d2 = new JButton("speak");
-            // button = new JButton("submit");
-             cat = new JButton("switchCat");
-            dog = new JButton("switchDog");
-            add(t1);
-            add(t2);
-            add(button);
-            add(d2);
-            add(cat);
-            add(dog);
-
-            button.addActionListener(e -> t2.setText(t1.getText().trim()));
-            d2.addActionListener(e->t1.setText(controller.enimalSpeak()));
-            cat.addActionListener(e->controller.setCat());
-            dog.addActionListener(e->controller.setDog());
-            addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    super.mousePressed(e);
-                    controller.mousePressed(e.getPoint());
-                }
-            });
-
-            addMouseMotionListener(new MouseMotionAdapter() {
-                @Override
-                public void mouseDragged(MouseEvent e) {
-                    super.mouseDragged(e);
-                    controller.mouseDragged(e.getPoint());
-                    repaint();
-                }
-            });
-
+        addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                super.mouseDragged(e);
+                controller.mouseDragged(e.getPoint());
+                repaint();
             }
+
+        });
+
+        switchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.toggleShape();
+                repaint();
+            }
+        });
+
+        this.add(switchButton);
+
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
